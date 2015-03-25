@@ -5,5 +5,6 @@ By Simulation: I'm able to specify the pool size (where By Exactness assumes, fo
 
 By Exactness: I look at the exact values of all leaves between 1 and 6 letters. By Exactness looks at racks with blanks (0, 1, or 2), and finds the distributions of the leave values. Assumes a full pool.
 
-The superleaves file can be found at http://quackle.cvs.sourceforge.net/viewvc/quackle/quackle/data/strategy/twl06/superleaves?revision=1.1
+The full superleaves file can be found at http://quackle.cvs.sourceforge.net/viewvc/quackle/quackle/data/strategy/twl06/superleaves?revision=1.1
 
+The six letter superleave file can be found at http://www.cross-tables.com/misc/leave6.txt
