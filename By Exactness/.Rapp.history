@@ -1,0 +1,1525 @@
+9/100*8/99
+combined.sorted
+head(combined.sorted)
+head(combined.sorted[combined.sorted$racklen==3])
+head(combined.sorted[combined.sorted$racklen==3],)
+head(combined.sorted[combined.sorted$racklen==3,])
+choose(12,2)
+12*11
+anum <- 9; bnum <- 2; cnum <- 2; dnum <- 4; enum <- 12; fnum <- 2; gnum <- 3;#
+hnum <- 2; inum <- 9; jnum <- 1; knum <- 1; lnum <- 4; mnum <- 2; nnum <- 6;#
+onum <- 8; pnum <- 2; qnum <- 1; rnum <- 6; snum <- 4; tnum <- 6; unum <- 4; #
+vnum <- 2; wnum <- 2; xnum <- 1; ynum <- 2; znum <- 1; blanknum <- 2;
+dictionary = data.frame(numinpool = c(9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2,#
+						  6, 8, 2, 1, 6,  4, 6, 4, 2, 2, 1, 2, 1, 2),#
+				numinrack = rep(0, 27),#
+				row.names = c('a','b','c','d','e','f','g','h','i','j','k',#
+					    'l','m','n','o','p','q','r','s','t','u','v',#
+					    'w','x','y','z','?'))
+calcProb.choose <- function(rack) {#
+	lv.ch <- tolower(unlist(strsplit(rack, '')))#
+	for (i in lv.ch) {#
+		dictionary[i, "numinrack"] = dictionary[i, "numinrack"] + 1#
+	}#
+	dictionary$numerator <- choose(dictionary$numinpool, dictionary$numinrack)	#
+	numerator   = prod(dictionary$numerator)#
+	denominator = factorial(100)/factorial(100-length(lv.ch))#
+	prob        = numerator / denominator#
+	return (prob)#
+}
+leaves$prob.choose <- sapply(leaves$Leave, calcProb.choose)
+head(leaves)
+save(leaves, file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/leaves.Rda")
+realleaves <- leaves[leaves$Leave %in% real$Alphagram, ]
+combined <- merge(real, realleaves, by.x = "Alphagram", by.y = "Leave")
+nrow(real) - nrow(combined)
+setdiff(real$Alphagram, combined$Alphagram) # 2 K's, 3 B's, 3 M's, 2 Z's, etc.
+combined$rank.choose <- integer(nrow(combined))
+head(combined)
+combined$rank.choose[combined$racklen==2] <- rank(1/combined$prob.choose[combined$racklen==2], ties.method="first")#
+combined$rank.choose[combined$racklen==3] <- rank(1/combined$prob.choose[combined$racklen==3], ties.method="first")#
+combined$rank.choose[combined$racklen==4] <- rank(1/combined$prob.choose[combined$racklen==4], ties.method="first")#
+combined$rank.choose[combined$racklen==5] <- rank(1/combined$prob.choose[combined$racklen==5], ties.method="first")#
+combined$rank.choose[combined$racklen==6] <- rank(1/combined$prob.choose[combined$racklen==6], ties.method="first")
+head(combined)
+combined.sorted <- combined[order(combined$racklen, combined$rank.choose, decreasing=FALSE), ]
+head(combined.sorted[combined.sorted$racklen==2, ])
+head(combined.sorted[combined.sorted$racklen==2, ], 10)
+dim(real)
+real0 <- read.table("~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/2-6s_0blanks.txt", sep='\t', col.names = c("Word", "Alphagram", "ProbabilityRank"), colClasses = c("character", "character", "integer"))
+head(real0)
+real <- read.table("~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/2-6s_0blanks.txt", sep='\t', col.names = c("Word", "Alphagram", "ProbabilityRank"), colClasses = c("character", "character", "integer"))
+realleaves <- leaves[leaves$Leave %in% real$Alphagram, ]
+combined <- merge(real, realleaves, by.x = "Alphagram", by.y = "Leave")
+nrow(real) - nrow(combined)
+setdiff(real$Alphagram, combined$Alphagram) # 2 K's, 3 B's, 3 M's, 2 Z's, etc.
+real <- read.table("~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/2-6s_0blanks.txt", sep='\t', col.names = c("Word", "Alphagram", "ProbabilityRank"), colClasses = c("character", "character", "integer"))
+dim(real)
+realleaves <- leaves[leaves$Leave %in% real$Alphagram, ]
+combined <- merge(real, realleaves, by.x = "Alphagram", by.y = "Leave")
+nrow(real) - nrow(combined)
+setdiff(real$Alphagram, combined$Alphagram) # 2 K's, 3 B's, 3 M's, 2 Z's, etc.
+combined$rank<- integer(nrow(combined))#
+combined$rank[combined$racklen==2] <- rank(1/combined$prob[combined$racklen==2], ties.method="first")#
+combined$rank[combined$racklen==3] <- rank(1/combined$prob[combined$racklen==3], ties.method="first")#
+combined$rank[combined$racklen==4] <- rank(1/combined$prob[combined$racklen==4], ties.method="first")#
+combined$rank[combined$racklen==5] <- rank(1/combined$prob[combined$racklen==5], ties.method="first")#
+combined$rank[combined$racklen==6] <- rank(1/combined$prob[combined$racklen==6], ties.method="first")#
+combined.sorted <- combined[order(combined$racklen, combined$rank, decreasing=FALSE), ]#
+#
+combined$rank.choose <- integer(nrow(combined))#
+combined$rank.choose[combined$racklen==2] <- rank(1/combined$prob.choose[combined$racklen==2], ties.method="first")#
+combined$rank.choose[combined$racklen==3] <- rank(1/combined$prob.choose[combined$racklen==3], ties.method="first")#
+combined$rank.choose[combined$racklen==4] <- rank(1/combined$prob.choose[combined$racklen==4], ties.method="first")#
+combined$rank.choose[combined$racklen==5] <- rank(1/combined$prob.choose[combined$racklen==5], ties.method="first")#
+combined$rank.choose[combined$racklen==6] <- rank(1/combined$prob.choose[combined$racklen==6], ties.method="first")#
+combined.sorted <- combined[order(combined$racklen, combined$rank.choose, decreasing=FALSE), ]
+head(combined)
+head(combined.sorted)
+max(combined.sorted$ProbabilityRank - combined.sorted$rank.choose)
+combined.sorted[combined.sorted$ProbabilityRank - combined.sorted$rank.choose==9, ]
+head(leaves)
+leaves$prob.scaled <- numeric(length = length(leaves$prob))
+head(leaves)
+leaves$prob.scaled[leaves$racklen==1] <- leaves$prob.choose[leaves$racklen==1]/sum(leaves$prob[leaves$racklen==1])#
+leaves$prob.scaled[leaves$racklen==2] <- leaves$prob.choose[leaves$racklen==2]/sum(leaves$prob[leaves$racklen==2])#
+leaves$prob.scaled[leaves$racklen==3] <- leaves$prob.choose[leaves$racklen==3]/sum(leaves$prob[leaves$racklen==3])#
+leaves$prob.scaled[leaves$racklen==4] <- leaves$prob.choose[leaves$racklen==4]/sum(leaves$prob[leaves$racklen==4])#
+leaves$prob.scaled[leaves$racklen==5] <- leaves$prob.choose[leaves$racklen==5]/sum(leaves$prob[leaves$racklen==5])#
+leaves$prob.scaled[leaves$racklen==6] <- leaves$prob.choose[leaves$racklen==6]/sum(leaves$prob[leaves$racklen==6])
+head(leaves)
+head(leaves[,-"prob"])
+head(leaves[,-c("prob")])
+head(leaves[,-leaves$prob])
+which(names(leaves)==prob)
+which(names(leaves)=="prob")
+head(leaves[,-which(names(leaves)=="prob")])
+leaves<-leaves[,-which(names(leaves)=="prob")]
+head(leaves)
+save(leaves, file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/leaves.Rda")
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")#
+text(1:13, tapply(leaves$Valuation[leaves$numBlanks==0], leaves$CminusV[leaves$numBlanks==0], median)+2, #
+	     tapply(leaves$Valuation[leaves$numBlanks==0], leaves$CminusV[leaves$numBlanks==0], median), cex=.5)
+???'weighted meidan'
+???'weighted medin'
+???'weighted median'
+findFn()
+library(sos)
+findFn("weighted median")
+sn <- sum(leaves$prob.scaled)
+sn
+sum(leaves$prob.choose)
+pn <- (100/sn) * (sn - (leaves$prob.scaled/2))
+pn
+wtd.boxplot
+boxpotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")
+names(boxplotoutput)
+names(boxpotoutput)
+boxpotoutput$stats
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")
+text(1:13, boxplotoutput[,3] + 2, #
+	       boxplotoutput[,3], cex=.5)
+text(1:13, boxplotoutput[3,] + 2, #
+	       boxplotoutput[3,], cex=.5)
+boxplotoutput[3,]
+boxplotoutput$stats[3,]
+text(1:13, boxplotoutput$stats[3,] + 2, #
+	       boxplotoutput$stats[3,], cex=.5)
+text(1:13, boxplotoutput$stats[3,], #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")
+text(1:13, boxplotoutput$stats[3,]-3, #
+	       boxplotoutput$stats[3,], cex=.6)
+text(1:13, boxplotoutput$stats[3,]-2,
+boxplotoutput$stats[3,], cex=.6)
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.5, #
+	       boxplotoutput$stats[3,], cex=.6)
+boxplotoutput$stats[3,], cex=.6, col="red")
+text(1:13, boxplotoutput$stats[3,]-1.5,
+boxplotoutput$stats[3,], cex=.6, col="red")
+sample(1:100, 1)
+sample(dictionary$numinpool, 10, replace=FALSE)
+sample(dictionary$row.names, 10, replace=FALSE)
+sample(rownames(dictionary), 10, replace=FALSE)
+sample(rownames(dictionary), 10, replace=FALSE, prob=dictionary$numinpool)
+sample(rownames(dictionary), 100, replace=FALSE, prob=dictionary$numinpool)
+sample(rownames(dictionary), 100, replace=TRUE, prob=dictionary$numinpool)
+table(sample(rownames(dictionary), 10000, replace=TRUE, prob=dictionary$numinpool))
+table(sample(rownames(dictionary), 100, replace=TRUE, prob=dictionary$numinpool))
+dictString <- rep(rownames(dictionary), dictionary$numinpool)
+dictString
+createRandomDictionary <- function(poolsize=sample(1:100, 1)) {#
+	sample(dictString, poolsize, replace=FALSE)#
+}
+createRandomDictionary()
+createRandomDictionary(poolsize=50)
+table(createRandomDictionary(poolsize=50))
+randomDictionary <- as.data.frame(table(createRandomDictionary(poolsize=50)))
+randomDictionary
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.5, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation\n(Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf")
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+dev.off()
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[] ~ #
+	        leaves$CminusV[], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[] ~ #
+	        leaves$CminusV[], #
+		    weights=leaves$prob.scaled[], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+par(mfrow=c(1,3))
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]-1.75, #
+	       boxplotoutput$stats[3,], cex=.6, col="red")
+textsize=.4
+color="red"
+distFromMedLine = -1.25
+textsize=.4#
+color="red"#
+distFromMedLine = -1.25#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+textsize=.4#
+color="red"#
+distFromMedLine = +.5#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+textsize=.4#
+color="red"#
+distFromMedLine = .6#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:13, boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+ncol(boxplotoutput)
+ncol(boxplotoutput$stats)
+textsize=.4#
+color="red"#
+distFromMedLine = .6#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+textsize=.4#
+color="red"#
+distFromMedLine = .6#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1] ~ #
+	        leaves$CminusV[leaves$numBlanks==1], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2] ~ #
+	        leaves$CminusV[leaves$numBlanks==2], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+textsize=.4#
+color="red"#
+distFromMedLine = .6#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+textsize=.65#
+color="red"#
+distFromMedLine = .6#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf")#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+?pdf
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf", width=12)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+png(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf", width=900)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+png(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.png", width=900)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+?png
+jpeg(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.jpeg", width=900)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+tiff(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.tiff", width=900)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+bmp(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.bmp", width=900)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf", width=12)#
+textsize=.65#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf", width=12)#
+textsize=1#
+color="red"#
+distFromMedLine = .75#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff.pdf", width=12)#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0] ~ #
+	        leaves$CminusV[leaves$numBlanks==0], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+head(leaves)
+leaves[leaves$Leave=="AE",]
+leaves[leaves$Leave=="TV",]
+findFn("contains substring")
+grep("T.*V", "TESTING")
+grep("T.*V", "TESTINGV")
+temp <- grep("T.*V", leaves$Leave[leaves$racklen==6])
+head(temp)
+length(temp)
+head(leaves[temp, ])
+head(leaves[temp[leaves$racklen==6], ])
+head(leaves[leaves$racklen==6][temp], ])
+head(leaves[leaves$racklen==6][temp], )
+head(leaves[leaves$racklen==6,][temp,], )
+paste(strsplit(givenleave, ''), sep=".*")
+givenleave <- "TV"
+paste(strsplit(givenleave, ''), sep=".*")
+paste(unlist(strsplit(givenleave, '')), sep=".*")
+paste(unlist(strsplit(givenleave, '')), sep="")
+join(unlist(strsplit(givenleave, '')), sep="")
+?paste
+paste(unlist(strsplit(givenleave, '')), sep=".*", collapse=TRUE)
+?paste
+paste(unlist(strsplit(givenleave, '')), collapse=".*")
+grepifiable <- (unlist(strsplit(givenleave, '')), collapse=".*")
+temp <- grep(grepifiable, leaves$Leave[leaves$racklen==6])
+grepifiable <- (unlist(strsplit(givenleave, '')), collapse=".*")
+grepifiable <- paste(unlist(strsplit(givenleave, '')), collapse=".*")
+grepifiable
+temp <- grep(grepifiable, leaves$Leave[leaves$racklen==6])
+head(temp)
+head(leaves[leaves$racklen==6,][temp,], )
+wtd.boxplot(temp$Valuation)
+head(temp$Valuation)
+class(temp)
+leavesGivenLeave <- leaves[leaves$racklen==6,][temp,]
+wtd.boxplot(leavesGivenLeave $Valuation)
+boxplotoutput <- wtd.boxplot(leavesGivenLeave$Valuation)
+boxplotoutput <- wtd.boxplot(leavesGivenLeave$Valuation, weights=leavesGivenLeave$prob.scaled)
+boxplotoutput <- wtd.boxplot(leavesGivenLeave$Valuation, weights=leavesGivenLeave$prob.scaled)#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+load(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/leaves.Rda")
+head(leaves)
+leaves[leaves$racklen==1,]
+mean(leaves[leaves$racklen==1,]$Valuation)
+mean(leaves[leaves$racklen==1,]$Valuation)
+ones <- leaves[leaves$racklen==1,]
+ones
+ones$prob.choose * ones$Valuation
+mean(ones$prob.choose * ones$Valuation)
+.00005555555
+ones <- leaves[leaves$racklen==2,]
+ones$prob.choose * ones$Valuation
+mean(ones$prob.choose * ones$Valuation)
+ones <- leaves[leaves$racklen==3,]
+mean(ones$prob.choose * ones$Valuation)
+.00000003269
+ones <- leaves[leaves$racklen==4,]
+mean(ones$prob.choose * ones$Valuation)
+ones <- leaves[leaves$racklen==6,]
+mean(ones$prob.choose * ones$Valuation)
+sum(ones$prob.choose * ones$Valuation)
+head(ones)
+sum(ones$prob.choose)
+sum(ones$prob.scaled)
+par(mfrow=c(3,1))#
+boxplot(leaves$Valuation[leaves$numBlanks==0] ~ leaves$numConsos[leaves$numBlanks==0] + leaves$numVowels[leaves$numBlanks==0], cex.axis=.5)#
+boxplot(leaves$Valuation[leaves$numBlanks==1] ~ leaves$numConsos[leaves$numBlanks==1] + leaves$numVowels[leaves$numBlanks==1], cex.axis=.75)#
+boxplot(leaves$Valuation[leaves$numBlanks==2] ~ leaves$numConsos[leaves$numBlanks==2] + leaves$numVowels[leaves$numBlanks==2], cex.axis=.75)
+library(ENmisc)
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+par(mfrow=c(1,3))#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==6] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==6], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==6], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+par(mfrow=c(5,3))#
+##### 6#
+racklength = 6#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+#
+##### 5#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+racklength = 4#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 3#
+racklength = 3#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 2#
+racklength = 2#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+par(mfrow=c(3,3))#
+##### 6#
+racklength = 6#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+#
+##### 5#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+racklength = 4#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+##### 5#
+par(mfrow=c(1,3))#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+head(leaves)
+mean(leaves$Valuation)
+sum(prob.choose)
+sum(leaves$prob.choose)
+sum(leaves$prob.scaled)
+mean(leaves$Valuation * leaves$prob.choose)
+mean(leaves$Valuation * leaves$prob.scaled)
+sum(leaves$Valuation * leaves$prob.scaled)
+sum(leaves$Valuation * leaves$prob.choose)
+par(mfrow=c(1,3))#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+par(mfrow=c(1,3))#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+##### 5#
+par(mfrow=c(1,3))#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+par(mfrow=c(1,3))#
+racklength = 4#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+par(mfrow=c(2,3))#
+racklength = 5#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+#par(mfrow=c(1,3))#
+racklength = 4#
+textsize=1#
+color="red"#
+distFromMedLine = 1#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+##### 5 (unweighted by probability)#
+par(mfrow=c(2,3))#
+racklength = 5#
+textsize=.7#
+color="red"#
+distFromMedLine = 1.5#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+#par(mfrow=c(1,3))#
+racklength = 4#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+par(mfrow=c(2,3))#
+racklength = 5#
+textsize=.7#
+color="red"#
+distFromMedLine = 2#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+#par(mfrow=c(1,3))#
+racklength = 4#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+##### 5#
+par(mfrow=c(2,3))#
+racklength = 5#
+textsize=.7#
+color="red"#
+distFromMedLine = 2#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+#par(mfrow=c(1,3))#
+racklength = 4#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)
+##### 5#
+pdf(file="~/Documents/Scrabble/Studies/Vowel Consonant Ratio Performance/By Exactness/ValuationByCVDiff_5_4.pdf", width=12)#
+par(mfrow=c(2,3))#
+racklength = 5#
+textsize=.7#
+color="red"#
+distFromMedLine = 2#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+##### 4#
+#par(mfrow=c(1,3))#
+racklength = 4#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==0 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==0 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="No Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+boxplotoutput <-#
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==1 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==1 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="One Blank on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex=textsize, col=color)#
+#
+boxplotoutput <- #
+wtd.boxplot(leaves$Valuation[leaves$numBlanks==2 & leaves$racklen==racklength] ~ #
+	        leaves$CminusV[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		    weights=leaves$prob.scaled[leaves$numBlanks==2 & leaves$racklen==racklength], #
+		  	ylim=c(-40,60), cex.axis=.75, xlab="Consonant - Vowel", ylab="Valuation (Median in red)", main="Two Blanks on Rack")#
+text(1:ncol(boxplotoutput$stats), boxplotoutput$stats[3,]+distFromMedLine, #
+	       boxplotoutput$stats[3,], cex= textsize, col=color)#
+dev.off()
+head(leaves)
+mean(leaves$Vauation)
+mean(leaves$Valuation)
+mean(leaves$Valuation[leaves$racklen==6])
+mean(leaves$Valuation[leaves$racklen==5])
+mean(leaves$Valuation[leaves$racklen==4])
+mean(leaves$Valuation[leaves$racklen==3])
+mean(leaves$Valuation[leaves$racklen==2])
+mean(leaves$Valuation[leaves$racklen==1])
+sum(leaves$Valuation*leaves$prob.choose)
+sum(leaves$prob.choose)
+median(leaves$Valuation)
+head(leaves[leaves$Valuation == -5.29, ])
+tail(leaves[leaves$Valuation == -5.29, ])
+tail(leaves[leaves$Valuation == -5.29, ], 50)
+dim(leaves[leaves$Valuation == -5.29, ], 50)
+dim(leaves[leaves$Valuation == -5.29, ])
+leaves[leaves$Valuation == -5.29, ]
